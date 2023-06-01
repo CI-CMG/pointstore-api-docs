@@ -1,0 +1,74 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Pointstore order payload",
+    "description": "payload to create a new pointstore request",
+	"type": "object",
+    "properties": {
+      	"bbox": {
+          "type": "string",
+          "description": "comma-separated list of geographic coordinates in units of decimal degrees. format: minx, miny, maxx, maxy"
+        },
+    	"email": {
+          	"description": "email address which will receive order notifications",
+      		"type": "string"
+        },
+        "grid": {
+          "type": "object",
+          "properties": {
+            "resolution": {
+              "description": "generated grid cell size in meters",
+              "type": "number"
+            },
+            "format": {
+              "description": "format code for generated grid",
+              "type": "number"
+            }
+          },
+          "required": [ "resolution"]
+        },
+        "datasets": {
+         	"type": "array",
+            "items": { "$ref": "#/$defs/dataset" }
+        }
+          
+    },
+    "additionalProperties": false,
+    "required": [ "email", "bbox"],
+      
+    "$defs": {
+      "dataset": {
+         "type": "object",
+         "required": [ "type" ],
+         "properties": {
+           	"type": {
+              "type": "string",
+              "description": "dataset type",
+              "enum": ["csb", "multibeam" ]
+            },
+            "provider": {
+              "type": "string",
+              "description": "trusted node name. only used for csb"
+            },
+            "platform" : {
+              "type": "string",
+              "description": "platform, aka ship or vessel name"
+            },
+            "collection_date": {
+              "type": "string",
+              "description": "date on which the data were collected. Format: YYYY-MM-DD"
+            },
+            "archive_date": {
+              "type": "string",
+              "description": "date on which the data were received at the DCDB. Format: YYYY-MM-DD"
+            },
+            "cruise": {
+              "type": "string",
+              "description": "cruise on which the data were collected. Only used for multibeam"
+            },
+          },
+	      "additionalProperties": false,      
+	   },
+       "required": [ "type" ]
+    
+  }
+}
