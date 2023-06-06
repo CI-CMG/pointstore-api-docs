@@ -177,3 +177,24 @@ curl -X GET https://q81rej0j12.execute-api.us-east-1.amazonaws.com/order/408429b
   "last_update": "2023-05-31T22:57:04+00:00",
   "status": "complete"
 }
+```
+
+## Grid formats
+if an output grid is requested, the output format can be any of those supported by the *-G* parameter in the [MB-System](https://www.mbari.org/technology/mb-system/) *mbgrid* command. See the [man page](https://www3.mbari.org/data/mbsystem/html/mbgrid.html) for more information.
+
+* 1:   ASCII table
+* 2:   binary file (GMT version 1 GRD file)
+* 3:   netCDF file (GMT version 2 GRD file)
+* 4:   Arc/Info and ArcView ASCII grid
+* 100: GMT netCDF 4-byte float format [Default]
+* 101: Native binary single precision floats in scanlines with leading grd header
+* 102: Native binary short integers in scanlines with leading grd header
+* 103: 8-bit standard Sun rasterfile (colormap ignored)
+* 104: Native binary unsigned char in scanlines with leading grd header
+* 105: Native binary bits in scanlines with leading grd header
+* 106: Native binary ``surfer'' grid files
+* 107: netCDF 1-byte byte format
+* 108: netCDF 1-byte char format
+* 109: netCDF 2-byte int format
+* 110: netCDF 4-byte int format
+* 111: netCDF 8-byte double format
