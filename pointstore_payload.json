@@ -53,6 +53,10 @@
               "type": "string",
               "description": "platform, aka ship or vessel name"
             },
+            "unique_id" : {
+              "type": "string",
+              "description": "identifier assigned by the provider which should uniquely identify the combination of provider and platform name"
+            },
             "collection_date": {
               "type": "string",
               "description": "date on which the data were collected. Format: YYYY-MM-DD"

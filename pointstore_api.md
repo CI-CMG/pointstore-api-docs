@@ -108,6 +108,10 @@ responses:
             "type": "string",
             "description": "platform, aka ship or vessel name"
           },
+          "unique_id" : {
+            "type": "string",
+            "description": "identifier assigned by the provider which should uniquely identify the combination of provider and platform name"
+          },
           "collection_date": {
             "type": "string",
             "description": "date on which the data were collected. Format: YYYY-MM-DD"
@@ -180,6 +184,7 @@ curl -X GET https://q81rej0j12.execute-api.us-east-1.amazonaws.com/order/408429b
 ```
 
 ## Grid formats
+
 if an output grid is requested, the output format can be any of those supported by the *-G* parameter in the [MB-System](https://www.mbari.org/technology/mb-system/) *mbgrid* command. See the [man page](https://www3.mbari.org/data/mbsystem/html/mbgrid.html) for more information.
 
 * 1:   ASCII table
