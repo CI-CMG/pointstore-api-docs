@@ -183,6 +183,20 @@ curl -X GET https://q81rej0j12.execute-api.us-east-1.amazonaws.com/order/408429b
 }
 ```
 
+## Output data format
+
+the points are delivered in a CSV-format file with the following attributes:
+UNIQUE_ID - unique identifier for the platform which collected the data
+ENTRY_DATE - date the data were archived at the DCDB
+LON - longitude of the sounding in decimal degrees. Coordinate precision varies based on instrument and trusted node and does not necessarily reflect positional accuracy	
+LAT - latitude of the sounding in decimal degrees. Coordinate precision varies based on instrument and trusted node and does not necessarily reflect positional accuracy
+DEPTH - depth in meters
+TIME - datetime of the sounding
+PLATFORM_NAME - name of the platform. Not necessarily unique.
+PROVIDER - trusted node which supplied the data
+H3 - spatial index used internally by the API
+H3_HIRES - spatial index used internally by the API
+
 ## Grid formats
 
 if an output grid is requested, the output format can be any of those supported by the *-G* parameter in the [MB-System](https://www.mbari.org/technology/mb-system/) *mbgrid* command. See the [man page](https://www3.mbari.org/data/mbsystem/html/mbgrid.html) for more information.
