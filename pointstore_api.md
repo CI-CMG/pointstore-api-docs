@@ -187,16 +187,16 @@ curl -X GET https://q81rej0j12.execute-api.us-east-1.amazonaws.com/order/408429b
 
 the points are delivered in a CSV-format file with the following attributes:
 
-1. UNIQUE_ID - unique identifier for the platform which collected the data
-2. ENTRY_DATE - date the data were archived at the DCDB
-3. LON - longitude of the sounding in decimal degrees. Coordinate precision varies based on instrument and trusted node and does not necessarily reflect positional accuracy	
-4. LAT - latitude of the sounding in decimal degrees. Coordinate precision varies based on instrument and trusted node and does not necessarily reflect positional accuracy
-5. DEPTH - depth in meters
-6. TIME - datetime of the sounding
-7. PLATFORM_NAME - name of the platform. Not necessarily unique.
-8. PROVIDER - trusted node which supplied the data
-9. H3 - spatial index used internally by the API
-10. H3_HIRES - spatial index used internally by the API
+* UNIQUE_ID - unique identifier for the platform which collected the data
+* ENTRY_DATE - date the data were archived at the DCDB
+* LON - longitude of the sounding in decimal degrees. Coordinate precision varies based on instrument and trusted node and does not necessarily reflect positional accuracy	
+* LAT - latitude of the sounding in decimal degrees. Coordinate precision varies based on instrument and trusted node and does not necessarily reflect positional accuracy
+* DEPTH - depth in meters
+* TIME - datetime of the sounding
+* PLATFORM_NAME - name of the platform. Not necessarily unique.
+* PROVIDER - trusted node which supplied the data
+* H3 - spatial index used internally by the API
+* H3_HIRES - spatial index used internally by the API
 
 ## Grid formats
 
