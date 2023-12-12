@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://docs.opendata.aws/noaa-nexrad/readme.html -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/bootstrap.min.css"
+          integrity="sha384-QgMEqHzUTK+LoHUhEPkPPb5doQ7O2/sBRiq03GWdbo3k3eNPu/LMiRtrWI+SdVzu" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/awsod.css"
+          integrity="sha384-xJI5lYTAHi5szIar83e2pooIt8BOLN3vGa4dRrLi07y45XFAbgzl9F0mMNyw5SzN" crossorigin="anonymous">
+    <title>
+        NOAA CSB on AWS
+    </title>
+</head>
+<body>
+<div class="container">
+    <div class="col-md-8 col-md-offset-2">
+
+        <h1>Crowdsourced Bathymetry in the NOAA Open Data Dissemination (NODD) Program</h1>
+        <div>
+
+            <p>The International Hydrographic Organization (IHO) defines crowdsourced bathymetry (CSB) as the collection
+                and sharing of depth measurements from vessels, using standard navigation instruments, while engaged in
+                routine maritime operations.</p>
+
+            <p>In 2023, nearly 75% of the seafloor remains unmapped and unexplored in part due to both technical
+                challenges and the high costs associated with systematic data collection activities. For the last
+                several years,
+                the IHO has focused on encouraging innovative supplementary data gathering activities, such as the
+                collection of crowdsourced bathymetry (CSB), to help address these gaps in bathymetric data. NOAA chairs
+                the IHO Crowdsourced Bathymetry Working Group and hosts the IHO Data Centre for Digital Bathymetry (IHO
+                DCDB) at NOAA’s National Centers for Environmental Information (NCEI).</p>
+
+            <p>This page includes information on data structure and sample use cases to help you get started. Additional
+                information about the project can be found on the Crowdsourced Bathymetry tab at the IHO Data
+                Centre for Digital Bathymetry <a href="https://www.ngdc.noaa.gov/iho/">website.</a></p>
+
+            <h2 id="accessing-the-archive-data">Accessing the Archive Data</h2>
+
+            <p>CSB data is hosted in the <code>noaa-dcdb-bathymetry-pds</code> Amazon S3 bucket in the us-east-1 AWS
+                region. The address for the public bucket is:
+                <code>https://noaa-dcdb-bathymetry-pds.s3.amazonaws.com/</code>.</p>
+
+            <p>Each file is available as an object in Amazon S3. The basic data format is:</p>
+
+            <p><code>/&lt;Year&gt;/&lt;Month&gt;/&lt;Day&gt;/&lt;filename&gt;</code></p>
+
+            <p>Where:</p>
+
+            <ul>
+                <li><code>&lt;Year&gt;</code> is the year the data was collected</li>
+                <li><code>&lt;Month&gt;</code> is the month of the year the data was collected</li>
+                <li><code>&lt;Day&gt;</code> is the day of the month the data was collected</li>
+                <li><code>&lt;filename&gt;</code> is the name of the file containing the data. These are comma separated
+                    value (csv) files.
+                </li>
+            </ul>
+
+            <p>All files in the archive use the same csv format (.csv) where the first line is the header describing the
+                columns of data
+                <code>UNIQUE_ID,FILE_UUID,LON,LAT,DEPTH,TIME,PLATFORM_NAME,PROVIDER</code></p>
+
+            <p>Where:</p>
+
+            <ul>
+                <li><code>UNIQUE_ID</code> = Unique ID of the platform/ship</li>
+                <li><code>FILE_UUID</code> = Unique ID of data file submitted</li>
+                <li><code>LON</code> = Longitude</li>
+                <li><code>LAT</code> = Latitude</li>
+                <li><code>DEPTH</code> = Depth in meters</li>
+                <li><code>TIME</code> = Time formatted as ISO 8601</li>
+                <li><code>PLATFORM_NAME</code> = Ship name</li>
+                <li><code>PROVIDER</code> = Organization providing the data</li>
+            </ul>
+
+            <h3 id="accessing-the-archive-data-using-aws-cli">Accessing the Archive Data using AWS CLI</h3>
+
+            <p>Using the AWS CLI is the most convenient way to get the data from S3. The CLI is a set of command line
+                tools that enable functionality such as <code>ls</code>, <code>cp</code>, and <code>sync</code> for S3
+                buckets. To install the CLI read the <a
+                        href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html">installation
+                    instructions</a> for your platform.</p>
+
+            <p>For example, to list all the data for June 6th, 2019 do:</p>
+
+            <p><code>aws s3 ls s3://noaa-dcdb-bathymetry-pds/csb/csv/2019/06/26/ --no-sign-request</code></p>
+
+            <p>The <code>--no-sign-request</code> flag enables you to run the command without providing credentials.
+                This works because the bucket is publicly accessible.</p>
+
+            <p>To download all the data for June 26th, 2019:</p>
+
+            <p><code>aws s3 cp s3://noaa-dcdb-bathymetry-pds/csb/csv/2019/06/26/ . --recursive --no-sign-request</code>
+            </p>
+
+            <p>Here the <code>--recursive</code> flag tells the CLI to grab all objects which begin with the keypath
+                <code>s3://noaa-dcdb-bathymetry-pds/csb/csv/2019/06/26/</code>.</p>
+
+            <h2 id="subscribing-to-csb-data-notifications">SNS</h2>
+
+            <p>We have set up public Amazon Simple Notification Service (SNS) topics that create a notification for
+                every new object added to the Amazon S3 bucket on AWS. To start, you can subscribe to these
+                notifications using email, Amazon SQS or AWS Lambda. This means you can automatically trigger
+                event-based processing to derive value added products.</p>
+
+            <p>The Amazon Resource Name (ARN) for the SNS data is:</p>
+
+            <p><code>arn:aws:sns:us-east-1:709902155096:NewDCDBBathymetryObject</code></p>
+
+        </div>
+        <footer>
+            <hr>
+            <a href="https://www.noaa.gov/information-technology/open-data-dissemination">NOAA Open Data Dissemination
+                (NODD)</a>
+        </footer>
+    </div>
+</div>
+
+</body>
+</html>
+
