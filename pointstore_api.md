@@ -59,6 +59,7 @@ example response:
 ```
 
 **GET** /count
+
 Return the number of points (soundings) matching the given search criteria. Search criteria are optional and provided as URL query parameters:
  
 * bbox (minx,miny,maxx,maxy format)
@@ -77,6 +78,7 @@ example response:
 ```
 
 **GET** /platforms
+
 Return a list of platforms (grouped by provider) associated with soundings matching the given search criteria. Search criteria are optional and provided as URL query parameters:
  
 * bbox (minx,miny,maxx,maxy format)
@@ -112,91 +114,9 @@ sample response:
   ]
 }
 ```
-  
-## JSON schema for Order payload
 
-```json
-{
-"$schema": "https://json-schema.org/draft/2020-12/schema",
-"title": "Pointstore order payload",
-"description": "payload to create a new pointstore request",
-"type": "object",
-  "properties": {
-    "bbox": {
-      "type": "string",
-      "description": "comma-separated list of geographic coordinates in units of decimal degrees. format: minx, miny, maxx, maxy"
-    },
-    "email": {
-      "description": "email address which will receive order notifications",
-    "type": "string"
-    },
-    "grid": {
-      "type": "object",
-      "description": "properties for (optional) generated grid. If this element is not provided, only soundings will be produced",
-      "properties": {
-        "resolution": {
-        "description": "generated grid cell size in meters",
-        "type": "number"
-            },
-            "format": {
-              "description": "format code for generated grid",
-              "type": "number"
-            }
-          },
-          "required": [ "resolution", "format"]
-        },
-        "datasets": {
-         	"type": "array",
-            "items": { "$ref": "#/$defs/dataset" },
-            "minItems": 1
-        }
-          
-    },
-    "additionalProperties": false,
-    "required": [ "email", "bbox"],
-      
-    "$defs": {
-      "dataset": {
-        "type": "object",
-        "required": [ "type" ],
-        "properties": {
-          "type": {
-            "type": "string",
-            "description": "dataset type",
-            "enum": ["csb", "multibeam" ]
-          },
-          "provider": {
-            "type": "string",
-            "description": "trusted node name. only used for csb"
-          },
-          "platform" : {
-            "type": "string",
-            "description": "platform, aka ship or vessel name"
-          },
-          "unique_id" : {
-            "type": "string",
-            "description": "identifier assigned by the provider which should uniquely identify the combination of provider and platform name"
-          },
-          "collection_date": {
-            "type": "string",
-            "description": "date on which the data were collected. Format: YYYY-MM-DD"
-          },
-          "archive_date": {
-            "type": "string",
-            "description": "date on which the data were received at the DCDB. Format: YYYY-MM-DD"
-          },
-          "cruise": {
-            "type": "string",
-            "description": "cruise on which the data were collected. Only used for multibeam"
-          },
-        },
-        "additionalProperties": false,      
-      },
-      "required": [ "type" ]
-    
-  }
-}
-```
+## JSON schema for Order payload
+[access](https://raw.githubusercontent.com/CI-CMG/pointstore-api-docs/refs/heads/main/pointstore_payload_schema.json) from GitHub repository
 
 ## Examples
 
