@@ -22,7 +22,7 @@ The process is asynchronous with the flow being:
 
 **POST** /order
 
-must include JSON payload described in the schema below. The *url* in the response can be used to check the status.
+Create a new **order**. Must include JSON payload described in the schema below. The *url* in the response can be used to check the status.
 
 responses:
 
@@ -40,7 +40,7 @@ example response:
 
 **GET** /order/:id
 
-must include the order id in the request path
+Return the status of an existing **order** in JSON format. Must include the order id in the request path
 
 responses:
 
@@ -48,6 +48,71 @@ responses:
 * 400 - no order id provided
 * 404 - invalid order id provided
 
+example response:
+
+```json
+{
+    "output_location": "s3://order-pickup/1bbc5137-9459-440c-aee6-c28c73af3f60.csv",
+    "last_update": "2024-09-19T23:34:01+00:00",
+    "status": "complete"
+}
+```
+
+**GET** /count
+Return the number of points (soundings) matching the given search criteria. Search criteria are optional and provided as URL query parameters:
+ 
+* bbox (minx,miny,maxx,maxy format)
+* providers (comma-separated list of provider names)
+* platforms  (comma-separated list of platform names)
+* collection_date_start (YYYY-MM-DD format)
+* collection_date_end (YYYY-MM-DD format)
+* archive_date_start (YYYY-MM-DD format)
+* archive_date_end (YYYY-MM-DD format)
+* unique_id (single value to identify a specific provider's platform)
+
+example response:
+
+```json 
+{"count": "275375042"}
+```
+
+**GET** /platforms
+Return a list of platforms (grouped by provider) associated with soundings matching the given search criteria. Search criteria are optional and provided as URL query parameters:
+ 
+* bbox (minx,miny,maxx,maxy format)
+* providers (comma-separated list of provider names)
+* platforms  (comma-separated list of platform names)
+* collection_date_start (YYYY-MM-DD format)
+* collection_date_end (YYYY-MM-DD format)
+* archive_date_start (YYYY-MM-DD format)
+* archive_date_end (YYYY-MM-DD format)
+* unique_id (single value to identify a specific provider's platform)
+
+sample response:
+```json
+{
+  "count": 4,
+  "data": [
+    {
+      "provider": "Rosepoint",
+      "platform": "Dulce Vida"
+    },
+    {
+      "provider": "Rosepoint",
+      "platform": "Laperouse"
+    },
+    {
+      "provider": "Rosepoint",
+      "platform": "S/V Aphrodite"
+    },
+    {
+      "provider": "AquaMap",
+      "platform": "Astrid"
+    }
+  ]
+}
+```
+  
 ## JSON schema for Order payload
 
 ```json
@@ -187,17 +252,14 @@ curl -X GET https://q81rej0j12.execute-api.us-east-1.amazonaws.com/order/408429b
 
 the points are delivered in a CSV-format file with the following attributes:
 
-* UNIQUE_ID - unique identifier for the platform which collected the data
-* ENTRY_DATE - date the data were archived at the DCDB
 * LON - longitude of the sounding in decimal degrees. Coordinate precision varies based on instrument and trusted node and does not necessarily reflect positional accuracy	
 * LAT - latitude of the sounding in decimal degrees. Coordinate precision varies based on instrument and trusted node and does not necessarily reflect positional accuracy
 * DEPTH - depth in meters
-* TIME - datetime of the sounding
+* TIME - datetime of the sounding in ISO-8601 format
 * PLATFORM_NAME - name of the platform. Not necessarily unique.
 * PROVIDER - trusted node which supplied the data
-* H3 - spatial index used internally by the API
-* H3_HIRES - spatial index used internally by the API
-
+* UNIQUE_ID - identifier intended to uniquely identify a given provider's platform
+  
 ## Grid formats
 
 if an output grid is requested, the output format can be any of those supported by the *-G* parameter in the [MB-System](https://www.mbari.org/technology/mb-system/) *mbgrid* command. See the [man page](https://www3.mbari.org/data/mbsystem/html/mbgrid.html) for more information.
