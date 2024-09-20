@@ -1,0 +1,245 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Autogrid order payload",
+  "description": "payload to create a new Autogrid request",
+  "type": "object",
+  "properties": {
+    "order_id": {
+      "type": "string",
+      "description": "internally assigned unique order identifier"
+    },
+    "bbox": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9 ,.-]+$",
+          "minLength": 7
+        }
+      ],
+      "description": "list of geographic coordinates in units of decimal degrees. format: minx, miny, maxx, maxy"
+    },
+    "email": {
+      "description": "email address which will receive order notifications. Empty value or missing element suppresses email notification",
+      "format": "email",
+      "type": "string"
+    },
+    "grid": {
+      "type": "object",
+      "properties": {
+        "resolution": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 1000,
+          "description": "generated grid cell size in meters"
+        },
+        "format": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 111,
+          "description": "format code for generated grid"
+        },
+        "background": {
+          "type": "string",
+          "enum": [
+            "etopo",
+            "gebco"
+          ],
+          "description": "background fill used by mbgrid"
+        }
+      },
+      "required": [
+        "resolution"
+      ]
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/multibeam_dataset"
+          },
+          {
+            "$ref": "#/$defs/csb_dataset"
+          }
+        ]
+      },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "bbox",
+    "datasets"
+  ],
+  "$defs": {
+    "multibeam_dataset": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "const": "multibeam"
+        },
+        "processing_level": {
+          "type": "string",
+          "enum": [
+            "raw",
+            "processed"
+          ],
+          "description": "limit results to data of the specified processing level. Applies only to multibeam"
+        },
+        "archive_date": {
+          "$ref": "#/$defs/archive_date"
+        },
+        "collection_date": {
+          "$ref": "#/$defs/collection_date"
+        },
+        "surveys": {
+          "type": "array",
+          "description": "list of surveys to include. Overrides other dataset filters except processing_level",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_ -]+$"
+          },
+          "minItems": 1
+        },
+        "exclude_surveys": {
+          "type": "array",
+          "description": "list of surveys to exclude. mutually exclusive with surveys property",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_ -]+$"
+          },
+          "minItems": 1
+        },
+        "platforms": {
+          "$ref": "#/$defs/platforms"
+        },
+        "providers": {
+          "$ref": "#/$defs/providers"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "label"
+      ],
+      "not": {
+        "required": [
+          "surveys",
+          "exclude_surveys"
+        ]
+      }
+    },
+    "csb_dataset": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "const": "csb"
+        },
+        "unique_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_ -]+$",
+          "description": "identifier assigned by the provider which should uniquely identify the combination of provider and platform name. Only applies to CSB"
+        },
+        "archive_date": {
+          "$ref": "#/$defs/archive_date"
+        },
+        "collection_date": {
+          "$ref": "#/$defs/collection_date"
+        },
+        "platforms": {
+          "$ref": "#/$defs/platforms"
+        },
+        "providers": {
+          "$ref": "#/$defs/providers"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "label"
+      ]
+    },
+    "archive_date": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date",
+          "description": "start of date range, inclusive"
+        },
+        "end": {
+          "type": "string",
+          "format": "date",
+          "description": "end of date range, inclusive"
+        }
+      },
+      "description": "date on which the data were received at the DCDB. Format: YYYY-MM-DD",
+      "anyOf": [
+        {
+          "required": [
+            "start"
+          ]
+        },
+        {
+          "required": [
+            "end"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "collection_date": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date",
+          "description": "start of date range, inclusive"
+        },
+        "end": {
+          "type": "string",
+          "format": "date",
+          "description": "end of date range, inclusive"
+        }
+      },
+      "description": "date on which the data were collected. Format: YYYY-MM-DD",
+      "anyOf": [
+        {
+          "required": [
+            "start"
+          ]
+        },
+        {
+          "required": [
+            "end"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[/|()A-Za-z0-9 .,-]+$"
+      },
+      "minItems": 1,
+      "description": "list of trusted nodes or source institution names"
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[/()A-Za-z0-9_ '.,-]+$"
+      },
+      "minItems": 1,
+      "description": "list of platforms, aka ship or vessel names"
+    }
+  }
+}
