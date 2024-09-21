@@ -5,12 +5,12 @@
 
 ## Introduction
 
-This API exposes one resource, *order*, which represents a request to extract a subset of soundings from the pointstore and optionally grid them. The soundings are delivered as points in a comma separated value (CSV) format file. The generated grid is provided in a user specified format and resolution.
+This API exposes three resources, the primary being **order** which represents a request to extract a subset of soundings from the pointstore and optionally grid them. The soundings are delivered as points in a comma separated value (CSV) format file which is described below. The generated grid is provided in a user specified format and resolution. The two additional resources, **count** and **platforms**, return the number of soundings and a list of platforms respectively.
 
-The process is asynchronous with the flow being:
+The order process is asynchronous with the flow being:
 
 1. submit order via HTTP POST request. The response to the POST request will contain an acknowlegement if order is accepted and an URL that can be used to check processing status.
-2. Once the order is complete, an email will be received with pickup instructions. Processing time is generally less than 30 minutes.
+2. Once the order is complete, an email will be received with pickup instructions. If no email is provided, no notification is provided and the user is responsible for checking the order status to get the download URL. Processing time is generally less than 30 minutes.
 
 ## Limitations and known issues
 
