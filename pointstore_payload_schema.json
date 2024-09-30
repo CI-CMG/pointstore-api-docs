@@ -142,6 +142,19 @@
         "label": {
           "const": "csb"
         },
+        "format": {
+          "type": "string",
+          "enum": [
+            "full",
+            "compact"
+          ],
+          "description": "include all point attributes (default) or only xyzt."
+        },
+        "file_uuid": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_ -]+$",
+          "description": "identifier which uniquely identifies the original submission file."
+        },
         "unique_id": {
           "type": "string",
           "pattern": "^[A-Za-z0-9_ -]+$",
