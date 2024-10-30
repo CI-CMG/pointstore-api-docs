@@ -179,6 +179,7 @@ the points are delivered in a CSV-format file with the following attributes:
 * PLATFORM_NAME - name of the platform. Not necessarily unique.
 * PROVIDER - trusted node which supplied the data
 * UNIQUE_ID - identifier intended to uniquely identify a given provider's platform
+* FILE_UUID - unique identifier for file from which the given sounding originated
   
 ## Grid formats
 
