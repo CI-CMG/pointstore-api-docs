@@ -134,8 +134,8 @@ curl -X POST https://q81rej0j12.execute-api.us-east-1.amazonaws.com/order \
   "bbox": "5,60,6,61",
   "datasets": [
     {
-      "type": "csb",
-      "platform": "Ramform Vanguard"
+      "label": "csb",
+      "platforms": ["Ramform Vanguard"]
     }
   ]
 }'
