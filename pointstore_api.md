@@ -1,7 +1,7 @@
 # Crowdsourced Bathymetry Pointstore API
 
 ### Warning
-*This application in active development and is being offered as a technology preview. No expectations should be made as to it's availability and the API may change prior to public release.*
+*This application is in active development and is being offered as a technology preview. No expectations should be made as to it's availability and the API may change prior to public release.*
 
 ## Introduction
 
