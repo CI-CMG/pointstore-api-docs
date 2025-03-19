@@ -1,11 +1,11 @@
-# Crowdsourced Bathymetry Pointstore API
+# CSB Data Extract API
 
 ### Warning
 *This application is in active development and is being offered as a technology preview. No expectations should be made as to it's availability and the API may change prior to public release.*
 
 ## Introduction
 
-This API exposes three resources, the primary being **order** which represents a request to extract a subset of soundings from the pointstore and optionally grid them. The soundings are delivered as points in a comma separated value (CSV) format file which is described below. The generated grid is provided in a user specified format and resolution. The two additional resources, **count** and **platforms**, return the number of soundings and a list of platforms respectively.
+This API exposes three resources, the primary being **order** which represents a request to extract a subset of soundings from the Crowdsourced Bathymetry point store and optionally grid them. The soundings are delivered as points in a comma separated value (CSV) format file which is described below. The generated grid is provided in a user specified format and resolution. The two additional resources, **count** and **platforms**, return the number of soundings and a list of platforms respectively.
 
 The order process is asynchronous with the flow being:
 
